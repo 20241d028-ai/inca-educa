@@ -33,8 +33,12 @@ export const Route = createFileRoute("/carreras/$slug")({
   ),
 });
 
+// Duración total en meses que representa el programa (todas las carreras son "1 año")
+const TOTAL_MONTHS = 12;
+
 function CareerDetail() {
   const c = Route.useLoaderData() as Career;
+  const monthsPerModule = TOTAL_MONTHS / c.malla.length;
 
   return (
     <>
@@ -85,18 +89,74 @@ function CareerDetail() {
         </div>
       </section>
 
-      <section className="bg-surface-2 border-y border-border py-20">
+      {/* MALLA CURRICULAR — ruta de progresión en el tiempo */}
+      <section className="bg-surface-2 border-y border-border py-20 overflow-hidden">
         <div className="container-page">
-          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-10">Malla curricular</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {c.malla.map((m) => (
-              <div key={m.ciclo} className="rounded-2xl bg-card border border-border p-6">
-                <p className="text-[11px] font-bold uppercase tracking-widest text-primary">{m.ciclo}</p>
-                <ul className="mt-4 space-y-2 text-sm">
-                  {m.cursos.map((cu) => <li key={cu} className="text-muted-foreground">{cu}</li>)}
-                </ul>
-              </div>
-            ))}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14">
+            <div>
+              <p className="eyebrow">Ruta de formación</p>
+              <h2 className="mt-3 text-2xl md:text-3xl font-extrabold tracking-tight">Malla curricular</h2>
+            </div>
+            <p className="text-sm text-muted-foreground max-w-sm text-pretty">
+              {c.duration} de formación distribuidos en {c.malla.length} módulos progresivos, desde la base técnica hasta las prácticas pre-profesionales.
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* Línea conectora (solo desktop) */}
+            <div
+              className="hidden md:block absolute top-6 h-0.5 bg-border"
+              style={{ left: `calc(50% / ${c.malla.length})`, right: `calc(50% / ${c.malla.length})` }}
+            />
+
+            <div
+              className="grid gap-10 md:gap-6"
+              style={{ gridTemplateColumns: `repeat(${c.malla.length}, minmax(0, 1fr))` }}
+            >
+              {c.malla.map((m, i) => {
+                const startMonth = Math.round(i * monthsPerModule) + 1;
+                const endMonth = Math.round((i + 1) * monthsPerModule);
+                const isLast = i === c.malla.length - 1;
+
+                return (
+                  <div key={m.ciclo} className="relative">
+                    {/* Paso: número + nombre del módulo */}
+                    <div className="hidden md:flex flex-col items-center mb-6">
+                      <div className="grid size-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground font-extrabold z-10 shadow-lg shadow-primary/20">
+                        {i + 1}
+                      </div>
+                    </div>
+                    <div className="md:hidden flex items-center gap-3 mb-4">
+                      <div className="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground font-extrabold text-sm">
+                        {i + 1}
+                      </div>
+                      <div>
+                        <p className="font-bold leading-tight">{m.ciclo}</p>
+                        <p className="text-xs text-muted-foreground">Aprox. mes {startMonth}–{endMonth}</p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl bg-card border border-border p-6 h-full">
+                      <p className="hidden md:block text-[11px] font-bold uppercase tracking-widest text-primary text-center">{m.ciclo}</p>
+                      <p className="hidden md:block mt-1 text-xs text-muted-foreground text-center">Aprox. mes {startMonth}–{endMonth}</p>
+                      <ul className="mt-4 space-y-2.5 text-sm">
+                        {m.cursos.map((cu) => (
+                          <li key={cu} className="flex gap-2 text-muted-foreground">
+                            <span className="mt-1.5 size-1.5 rounded-full bg-primary shrink-0" />
+                            {cu}
+                          </li>
+                        ))}
+                      </ul>
+                      {isLast && (
+                        <p className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-primary">
+                          Egresas con título técnico
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

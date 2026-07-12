@@ -23,6 +23,7 @@ import { Route as CarrerasRouteImport } from './routes/carreras'
 import { Route as BolsaLaboralRouteImport } from './routes/bolsa-laboral'
 import { Route as AdmisionRouteImport } from './routes/admision'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CarrerasIndexRouteImport } from './routes/carreras.index'
 import { Route as CarrerasSlugRouteImport } from './routes/carreras.$slug'
 
 const TransparenciaRoute = TransparenciaRouteImport.update({
@@ -95,6 +96,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CarrerasIndexRoute = CarrerasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CarrerasRoute,
+} as any)
 const CarrerasSlugRoute = CarrerasSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -117,12 +123,12 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/transparencia': typeof TransparenciaRoute
   '/carreras/$slug': typeof CarrerasSlugRoute
+  '/carreras/': typeof CarrerasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admision': typeof AdmisionRoute
   '/bolsa-laboral': typeof BolsaLaboralRoute
-  '/carreras': typeof CarrerasRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/docentes': typeof DocentesRoute
   '/eventos': typeof EventosRoute
@@ -134,6 +140,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/transparencia': typeof TransparenciaRoute
   '/carreras/$slug': typeof CarrerasSlugRoute
+  '/carreras': typeof CarrerasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -152,6 +159,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/transparencia': typeof TransparenciaRoute
   '/carreras/$slug': typeof CarrerasSlugRoute
+  '/carreras/': typeof CarrerasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,12 +179,12 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/transparencia'
     | '/carreras/$slug'
+    | '/carreras/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admision'
     | '/bolsa-laboral'
-    | '/carreras'
     | '/contacto'
     | '/docentes'
     | '/eventos'
@@ -188,6 +196,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/transparencia'
     | '/carreras/$slug'
+    | '/carreras'
   id:
     | '__root__'
     | '/'
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/transparencia'
     | '/carreras/$slug'
+    | '/carreras/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -324,6 +334,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/carreras/': {
+      id: '/carreras/'
+      path: '/'
+      fullPath: '/carreras/'
+      preLoaderRoute: typeof CarrerasIndexRouteImport
+      parentRoute: typeof CarrerasRoute
+    }
     '/carreras/$slug': {
       id: '/carreras/$slug'
       path: '/$slug'
@@ -336,10 +353,12 @@ declare module '@tanstack/react-router' {
 
 interface CarrerasRouteChildren {
   CarrerasSlugRoute: typeof CarrerasSlugRoute
+  CarrerasIndexRoute: typeof CarrerasIndexRoute
 }
 
 const CarrerasRouteChildren: CarrerasRouteChildren = {
   CarrerasSlugRoute: CarrerasSlugRoute,
+  CarrerasIndexRoute: CarrerasIndexRoute,
 }
 
 const CarrerasRouteWithChildren = CarrerasRoute._addFileChildren(
