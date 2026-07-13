@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/page-header";
 import { motion } from "framer-motion";
 import {
@@ -23,6 +23,8 @@ import {
 } from "lucide-react";
 import inst from "@/assets/inst.jpg";
 import fondo from "@/assets/fondo.jpg";
+import { careers } from "@/lib/site-data";
+import { StickyLeadForm } from "@/components/sticky-lead-form";
 
 export const Route = createFileRoute("/nosotros")({
   head: () => ({
@@ -131,6 +133,10 @@ function NosotrosPage() {
         title="Formando técnicos emprendedores en Cusco desde 2002."
         description="Somos un Centro de Educación Técnico-Productiva (CETPRO) comprometido con que jóvenes y adultos accedan a educación técnica de calidad y se inserten en el mercado laboral en mejores condiciones."
       />
+
+      {/* Ancla: inicio del formulario sticky */}
+      <div id="nosotros-lead-start" />
+      <StickyLeadForm careers={careers} startId="nosotros-lead-start" endId="nosotros-lead-end" />
 
       {/* NUESTRA HISTORIA */}
       <section className="bg-background py-20">
@@ -329,6 +335,9 @@ function NosotrosPage() {
         </motion.div>
       </section>
 
+      {/* Ancla: fin del formulario sticky */}
+      <div id="nosotros-lead-end" />
+
       {/* FRASE INSTITUCIONAL */}
       <section className="bg-gradient-to-b from-surface-2 to-background border-y border-border py-24">
         <motion.div
@@ -347,4 +356,4 @@ function NosotrosPage() {
       </section>
     </>
   );
-} 
+}

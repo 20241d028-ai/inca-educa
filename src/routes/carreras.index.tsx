@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Search, ArrowRight } from "lucide-react";
 import { careers } from "@/lib/site-data";
+import { StickyLeadForm } from "@/components/sticky-lead-form";
 
 export const Route = createFileRoute("/carreras/")({
   head: () => ({
@@ -43,6 +44,10 @@ function CarrerasPage() {
           </p>
         </div>
       </section>
+
+      {/* Ancla: inicio del formulario sticky */}
+      <div id="carreras-lead-start" />
+      <StickyLeadForm careers={careers} startId="carreras-lead-start" endId="carreras-lead-end" />
 
       <section className="container-page py-12">
         <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between mb-10">
@@ -109,6 +114,9 @@ function CarrerasPage() {
             ))}
           </div>
         )}
+
+        {/* Ancla: fin del formulario sticky */}
+        <div id="carreras-lead-end" />
       </section>
     </>
   );

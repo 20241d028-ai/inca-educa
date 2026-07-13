@@ -6,6 +6,8 @@ import {
   UtensilsCrossed,
   Landmark,
 } from "lucide-react";
+import { careers } from "@/lib/site-data";
+import { StickyLeadForm } from "@/components/sticky-lead-form";
 
 // Empresas
 import logoEmpresa1 from "@/assets/logos/logoEmpresa1.png";
@@ -104,6 +106,9 @@ function ConveniosPage() {
         description="Trabajamos junto a empresas e instituciones para brindar oportunidades de prácticas preprofesionales, inserción laboral y desarrollo profesional a nuestros estudiantes."
       />
 
+      {/* Ancla: inicio del formulario sticky */}
+      <div id="convenios-lead-start" />
+      <StickyLeadForm careers={careers} startId="convenios-lead-start" endId="convenios-lead-end" />
 
       <section className="container-page py-20">
         <div className="grid md:grid-cols-2 gap-8">
@@ -214,6 +219,9 @@ function ConveniosPage() {
           ))}
 
         </div>
+
+        {/* Ancla: fin del formulario sticky */}
+        <div id="convenios-lead-end" />
 
       </section>
 
