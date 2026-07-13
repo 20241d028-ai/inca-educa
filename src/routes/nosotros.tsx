@@ -22,6 +22,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import inst from "@/assets/inst.jpg";
+import fondo from "@/assets/fondo.jpg";
 
 export const Route = createFileRoute("/nosotros")({
   head: () => ({
@@ -346,4 +347,4 @@ function NosotrosPage() {
       </section>
     </>
   );
-}
+} 
