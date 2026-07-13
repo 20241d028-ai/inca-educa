@@ -50,7 +50,7 @@ export function ChatWidget() {
     <>
       {/* Chat panel */}
       {open && (
-        <div className="fixed bottom-24 right-6 z-40 flex h-[28rem] w-[22rem] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-elevated">
+        <div className="fixed bottom-44 right-6 z-40 flex h-[28rem] w-[22rem] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-elevated">
           {/* Header */}
           <div className="flex items-center gap-3 bg-secondary px-4 py-3.5 text-secondary-foreground">
             <div className="grid size-9 shrink-0 place-items-center rounded-full bg-white/20">

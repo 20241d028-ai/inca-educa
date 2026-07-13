@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
+// import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Award, Users, Briefcase, GraduationCap, Sparkles, Calendar, Quote, CheckCircle2 } from "lucide-react";
-import heroImg from "@/assets/hero-dark-bg.webp";
-import { careers, stats, events, news, partnerSectors, testimonials } from "@/lib/site-data";
+import { ArrowRight, Award, Briefcase, GraduationCap, Sparkles, Calendar, Clock, MapPinned, ShieldCheck, MessageCircleQuestion } from "lucide-react";
+// import heroImg from "@/assets/hero-dark-bg.webp"; // imagen estática original, comentada mientras el carrusel es el fondo del hero
+import { careers, stats, events, news, partnerSectors } from "@/lib/site-data";
+import { CareerCarousel } from "@/components/career-carousel";
+import { StickyLeadForm } from "@/components/sticky-lead-form";
 
-const RubikCube = lazy(() => import("@/components/rubik-cube"));
+// Cubo de Rubik 3D — dejado comentado por ahora, se reemplaza por el carrusel de carreras.
+// const RubikCube = lazy(() => import("@/components/rubik-cube"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -33,7 +36,9 @@ function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-ink text-white">
+      <section className="relative overflow-hidden bg-ink text-white min-h-screen flex items-center">
+        {/* Fondo: carrusel de carreras a pantalla completa
+            (imagen estática original queda comentada por si se necesita volver a ella)
         <div className="absolute inset-0">
           <img
             src={heroImg}
@@ -45,9 +50,11 @@ function HomePage() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/50" />
         </div>
+        */}
+        <CareerCarousel careers={careers} variant="background" />
 
-        <div className="container-page relative py-24 md:py-32 lg:py-40 grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div initial="hidden" animate="show" variants={fadeUp}>
+        <div className="relative w-full px-6 sm:px-10 lg:px-16 py-20">
+          <motion.div initial="hidden" animate="show" variants={fadeUp} className="max-w-2xl text-left">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-3 py-1 text-[11px] font-bold uppercase tracking-widest backdrop-blur">
               <span className="size-1.5 rounded-full bg-primary animate-pulse" />
               CETPRO Cusco · Licenciado
@@ -55,10 +62,6 @@ function HomePage() {
             <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight text-balance">
               Pensamiento técnico, precisión y resolución de problemas.
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-white/80 text-pretty">
-              Así como cada movimiento en un cubo Rubik acerca a la solución, en INCA EDUCA formamos técnicos que piensan
-              con método: análisis, práctica constante y mejora continua en cada carrera.
-            </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 to="/admision"
@@ -74,14 +77,12 @@ function HomePage() {
               </Link>
             </div>
           </motion.div>
-
-          <div className="hidden lg:flex justify-center">
-            <Suspense fallback={<div className="w-[420px] h-[420px] rounded-xl bg-white/5 animate-pulse" />}>
-              <RubikCube width={420} height={420} />
-            </Suspense>
-          </div>
         </div>
       </section>
+
+      {/* Ancla: a partir de aquí (inmediatamente después del hero) empieza a mostrarse el formulario sticky */}
+      <div id="lead-form-start" />
+      <StickyLeadForm careers={careers} startId="lead-form-start" endId="lead-form-end" />
 
       {/* STATS */}
       <section className="bg-background border-b border-border">
@@ -236,36 +237,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="bg-ink text-white py-24">
-        <div className="container-page">
-          <div className="max-w-2xl">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-primary">Voces de nuestra comunidad</p>
-            <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight">Historias que inspiran</h2>
-          </div>
-          <div className="mt-12 grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <motion.blockquote
-                key={t.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="rounded-2xl bg-white/5 border border-white/10 p-8 backdrop-blur"
-              >
-                <Quote className="h-6 w-6 text-primary mb-4" />
-                <p className="text-white/90 text-pretty">{t.quote}</p>
-                <footer className="mt-6">
-                  <p className="font-bold">{t.name}</p>
-                  <p className="text-xs text-white/60">{t.career}</p>
-                </footer>
-              </motion.blockquote>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTORES DONDE SE INSERTAN NUESTROS EGRESADOS */}
+      {/* SECTORES DONDE SE INSERTAN NUESTROS EGRESADOS 
       <section className="container-page py-16 border-b border-border">
         <p className="text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-10">Nuestros egresados se insertan en</p>
         <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-3">
@@ -274,41 +246,72 @@ function HomePage() {
           ))}
         </div>
       </section>
-
-      {/* CTA */}
+*/}
+      {/* FAQ */}
       <section className="container-page py-24">
-        <div className="relative overflow-hidden rounded-3xl bg-primary p-12 md:p-20 text-primary-foreground text-center">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-secondary opacity-90" />
-          <div className="relative max-w-2xl mx-auto">
-            <Users className="mx-auto h-10 w-10 text-white/80 mb-6" />
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-balance">
-              ¿Listo para transformar tu futuro?
+        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-16">
+          <div>
+            <p className="eyebrow">Antes de postular</p>
+            <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-balance">
+              Preguntas frecuentes
             </h2>
-            <p className="mt-5 text-white/80 text-pretty">
-              Únete a la institución técnica líder en Cusco. Las inscripciones para el próximo ciclo académico están abiertas.
+            <p className="mt-5 max-w-sm text-muted-foreground text-pretty">
+              Resolvemos las dudas más comunes de quienes están por iniciar una carrera técnica con nosotros.
             </p>
-            <ul className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-              {["Becas hasta 50%", "Cuotas flexibles", "Inicio inmediato"].map((f) => (
-                <li key={f} className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4" /> {f}</li>
-              ))}
-            </ul>
-            <div className="mt-10 flex flex-wrap justify-center gap-4">
-              <Link
-                to="/admision"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-secondary hover:bg-white/90 transition"
+            <a
+              href="https://wa.me/51984000000?text=Hola%20INCA%20EDUCA%2C%20tengo%20una%20consulta%20sobre%20admisión"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 text-primary font-bold hover:underline underline-offset-4"
+            >
+              ¿Tienes otra duda? Escríbenos <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-6">
+            {[
+              {
+                icon: Clock,
+                q: "¿Cuánto dura cada carrera?",
+                a: "Todos nuestros programas técnico-productivos tienen una duración de 1 año, organizados por módulos aplicables directamente al mundo laboral.",
+              },
+              {
+                icon: MapPinned,
+                q: "¿La modalidad es presencial?",
+                a: "Sí, las clases son 100% presenciales en nuestra sede de San Sebastián, Cusco, con talleres y laboratorios equipados para la práctica real.",
+              },
+              {
+                icon: ShieldCheck,
+                q: "¿Qué certificación obtengo?",
+                a: "Un título técnico con reconocimiento oficial del Ministerio de Educación, ya que estamos licenciados como CETPRO desde 2011.",
+              },
+              {
+                icon: MessageCircleQuestion,
+                q: "¿Cómo me inscribo?",
+                a: "Completa el formulario de esta página o escríbenos por WhatsApp; un asesor te acompaña en todo el proceso de matrícula.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.q}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="rounded-2xl bg-card border border-border p-6"
               >
-                Iniciar inscripción online <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/contacto"
-                className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-bold backdrop-blur hover:bg-white/20 transition"
-              >
-                Hablar con un asesor
-              </Link>
-            </div>
+                <div className="grid size-11 place-items-center rounded-xl bg-primary-soft text-primary mb-4">
+                  <item.icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-bold">{item.q}</h3>
+                <p className="mt-2 text-sm text-muted-foreground text-pretty">{item.a}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
+
+      {/* Ancla: a partir de aquí (antes del CTA final) deja de mostrarse el formulario sticky */}
+      <div id="lead-form-end" />
     </>
   );
 }
